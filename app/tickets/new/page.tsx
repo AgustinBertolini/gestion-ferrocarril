@@ -9,6 +9,8 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircle, Info } from "lucide-react"
 
 export default function NewTicketPage() {
   return (
@@ -69,7 +71,7 @@ export default function NewTicketPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 border p-4 rounded-md bg-muted/20">
+                  <div id="responsible-section" className="grid grid-cols-2 gap-4 border p-4 rounded-md bg-muted/20">
                     <div className="space-y-2">
                       <Label htmlFor="responsible">Responsable</Label>
                       <Select disabled>
@@ -78,6 +80,7 @@ export default function NewTicketPage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="new">Agregar nuevo responsable</SelectItem>
+                          <SelectItem value="existing">Seleccionar pasajero existente</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -97,6 +100,15 @@ export default function NewTicketPage() {
                       </Select>
                     </div>
                   </div>
+
+                  <Alert>
+                    <Info className="h-4 w-4" />
+                    <AlertTitle>Información</AlertTitle>
+                    <AlertDescription>
+                      Los menores de 12 años tienen un descuento del 50% en el valor del pasaje. Los menores de edad
+                      deben viajar con un responsable.
+                    </AlertDescription>
+                  </Alert>
                 </CardContent>
                 <CardFooter className="flex justify-end">
                   <Button>Continuar</Button>
@@ -160,6 +172,29 @@ export default function NewTicketPage() {
                     </div>
                   </div>
 
+                  <div className="space-y-2">
+                    <Label htmlFor="formation">Formación</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar formación" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="f-001">F-001 (Constitución - Miramar, 15/05/2025)</SelectItem>
+                        <SelectItem value="f-002">F-002 (Constitución - Mar del Plata, 15/05/2025)</SelectItem>
+                        <SelectItem value="f-003">F-003 (Constitución - Chascomús, 16/05/2025)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <Alert>
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Información de Tramos</AlertTitle>
+                    <AlertDescription>
+                      El viaje seleccionado tiene estaciones intermedias en Alejandro Korn, Chascomús y Mar del Plata.
+                      El tiempo de demora en cada estación intermedia es de 15 minutos adicionales.
+                    </AlertDescription>
+                  </Alert>
+
                   <Separator />
 
                   <div className="space-y-4">
@@ -183,6 +218,32 @@ export default function NewTicketPage() {
                   <div className="space-y-2">
                     <Label htmlFor="seat">Selección de Butaca</Label>
                     <div className="border rounded-md p-4 bg-muted/20">
+                      <div className="flex justify-between mb-4">
+                        <Select defaultValue="vagon-1">
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Seleccionar vagón" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="vagon-1">Vagón 1 - Turista</SelectItem>
+                            <SelectItem value="vagon-2">Vagón 2 - Pullman</SelectItem>
+                            <SelectItem value="vagon-3">Vagón 3 - Ejecutivo</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1">
+                            <div className="w-4 h-4 bg-green-500 rounded-sm"></div>
+                            <span className="text-xs">Disponible</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-4 h-4 bg-red-500 rounded-sm"></div>
+                            <span className="text-xs">Ocupado</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-4 h-4 bg-yellow-500 rounded-sm"></div>
+                            <span className="text-xs">Seleccionado</span>
+                          </div>
+                        </div>
+                      </div>
                       <div className="grid grid-cols-6 gap-2">
                         {Array.from({ length: 24 }).map((_, i) => (
                           <Button key={i} variant="outline" size="sm" className="h-10 w-10">
@@ -195,6 +256,16 @@ export default function NewTicketPage() {
                       </div>
                     </div>
                   </div>
+
+                  <Alert>
+                    <Info className="h-4 w-4" />
+                    <AlertTitle>Información</AlertTitle>
+                    <AlertDescription>
+                      Recuerde que una butaca puede ser ocupada en diferentes tramos. Por ejemplo, la butaca 15 puede
+                      estar ocupada de Constitución a Chascomús por un pasajero, y luego de Chascomús a Mar del Plata
+                      por otro.
+                    </AlertDescription>
+                  </Alert>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button variant="outline">Atrás</Button>
@@ -219,8 +290,9 @@ export default function NewTicketPage() {
                     <div>
                       <h3 className="font-medium">Información del Viaje</h3>
                       <p className="text-sm text-muted-foreground mt-2">Ruta: Constitución - Mar del Plata</p>
-                      <p className="text-sm text-muted-foreground">Fecha: 15/05/2025</p>
-                      <p className="text-sm text-muted-foreground">Categoría: Turista - Butaca 45</p>
+                      <p className="text-sm text-muted-foreground">Fecha: 15/05/2025 - 08:30 hs</p>
+                      <p className="text-sm text-muted-foreground">Categoría: Turista - Vagón 1 - Butaca 45</p>
+                      <p className="text-sm text-muted-foreground">Duración estimada: 5h 15m</p>
                     </div>
                   </div>
 
@@ -232,11 +304,11 @@ export default function NewTicketPage() {
                         <span className="text-sm">$800</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Descuento por estaciones intermedias (2%)</span>
-                        <span className="text-sm text-red-500">-$16</span>
+                        <span className="text-sm">Descuento por estaciones intermedias (2% x 2 estaciones)</span>
+                        <span className="text-sm text-red-500">-$32</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Recargo por categoría (0%)</span>
+                        <span className="text-sm">Recargo por categoría (0% - Turista)</span>
                         <span className="text-sm">$0</span>
                       </div>
                       <div className="flex justify-between">
@@ -246,7 +318,7 @@ export default function NewTicketPage() {
                       <Separator className="my-2" />
                       <div className="flex justify-between font-medium">
                         <span>Total</span>
-                        <span>$784</span>
+                        <span>$768</span>
                       </div>
                     </div>
                   </div>
@@ -265,6 +337,15 @@ export default function NewTicketPage() {
                       </SelectContent>
                     </Select>
                   </div>
+
+                  <Alert>
+                    <Info className="h-4 w-4" />
+                    <AlertTitle>Política de Cancelación</AlertTitle>
+                    <AlertDescription>
+                      La cancelación de los pasajes tiene un límite de 48 horas de antelación. Pasado este tiempo, no se
+                      podrá realizar la cancelación ni se reembolsará el importe.
+                    </AlertDescription>
+                  </Alert>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button variant="outline">Atrás</Button>
